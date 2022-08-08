@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  api:
+    build: api/
+    ports:
+      - 3000:3000
+    env_file:
+      - api/.env
+  client:
+    build: client/
+    ports:
+      - 4200:4200
+     

@@ -1,0 +1,105 @@
+<form [formGroup]="userForm"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+      class="form">
+  <mat-form-field class="form__input"
+                  appearance="fill">
+    <mat-label>FirstName</mat-label>
+    <input matInput
+           placeholder="FirstName"
+           type="text"
+           name="firstName"
+           formControlName="firstName">
+  </mat-form-field>
+  <mat-form-field class="form__input"
+                  appearance="fill">
+    <mat-label>LastName</mat-label>
+    <input matInput
+           placeholder="LastName"
+           type="text"
+           name="lastName"
+           formControlName="lastName">
+  </mat-form-field>
+  <mat-form-field class="form__input"
+                  appearance="fill">
+    <mat-label>Date Of Birth</mat-label>
+    <input matInput
+           formControlName="dateOfBirth"
+           [matDatepicker]="picker">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker
+                    startView="year">
+    </mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="form__input"
+                  appearance="fill">
+    <mat-label>Email ID</mat-label>
+    <input matInput
+           placeholder="Email ID"
+           type="text"
+           name="lastName"
+           formControlName="emailID">
+  </mat-form-field>
+  <mat-radio-group class="form__input"
+                   aria-label="Gender"
+                   formControlName="gender">
+    <mat-radio-button value="male">Male</mat-radio-button>
+    <mat-radio-button value="female">Female</mat-radio-button>
+  </mat-radio-group>
+  <mat-form-field class="form__input"
+                  appearance="fill">
+    <mat-label>Country</mat-label>
+    <mat-select
+      formControlName="countryId">
+      <mat-option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="form__input"
+                  appearance="fill">
+    <mat-label>State</mat-label>
+    <mat-select
+      formControlName="stateId">
+      <mat-option *ngFor="let state of states" value="{{state.id}}">{{state.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="form__input"
+                  appearance="fill">
+    <mat-label>City</mat-label>
+    <mat-select
+      formControlName="cityId">
+      <mat-option *ngFor="let city of cities" value="{{city.id}}">{{city.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="form__input"
+                  appearance="fill">
+    <mat-label>Address</mat-label>
+    <input matInput
+           placeholder="Address"
+           type="text"
+           name="address"
+           formControlName="address">
+  </mat-form-field>
+  <mat-form-field class="form__input"
+                  appearance="fill">
+    <mat-label>PIN-code</mat-label>
+    <input matInput
+           placeholder="PIN-code"
+           type="text"
+           name="pinCode"
+           formControlName="pinCode">
+  </mat-form-field>
+  <div class="form__control">
+    <button mat-raised-button
+            color="primary"
+            type="submit"
+            class="primary-btn"
+            [disabled]="!userForm.valid">
+      Submit
+    </button>
+    <button mat-raised-button
+            color="primary"
+            class="primary-btn"
+            type="reset">Reset
+    </button>
+  </div>
+</form>
