@@ -1,13 +1,12 @@
-import {Injectable} from "@angular/core";
-import {Observable, Subject} from "rxjs";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-@Injectable({providedIn: "root"})
+@Injectable({ providedIn: 'root' })
 export class CommonService {
   private newDataSubject = new Subject<any>();
 
-  constructor(private snackBar: MatSnackBar) {
-  }
+  constructor(private snackBar: MatSnackBar) {}
 
   sendUpdate(data?: any) {
     this.newDataSubject.next(data);
@@ -18,6 +17,6 @@ export class CommonService {
   }
 
   showNotify(message: string, action: string) {
-    this.snackBar.open(message, action)
+    this.snackBar.open(message, action);
   }
 }

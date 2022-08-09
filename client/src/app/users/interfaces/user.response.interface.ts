@@ -1,6 +1,6 @@
-import {User} from "./user.interface";
+import { User } from './user.interface';
 
 export interface UserResponse {
-  users: User[],
+  users: User[];
   count: number;
 }

@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import csc from 'michaelolof-country-state-city'
-import { ICountry, IState, ICity } from 'michaelolof-country-state-city'
+import csc from 'michaelolof-country-state-city';
+import { ICountry, IState, ICity } from 'michaelolof-country-state-city';
 
 @Injectable()
 export class GeoService {
-
   getCountries(): ICountry[] {
     return csc.getAllCountries();
   }
 
   getStatesOfCountry(countryId: string): IState[] {
-    return csc.getStatesOfCountry(countryId)
+    return csc.getStatesOfCountry(countryId);
   }
 
   getCitiesOfState(stateId: string): ICity[] {
@@ -21,7 +20,7 @@ export class GeoService {
     return {
       countryId: csc.getCountryById(countryId).name,
       stateId: csc.getStateById(stateId).name,
-      cityId: csc.getCityById(cityId).name
+      cityId: csc.getCityById(cityId).name,
     };
   }
 }

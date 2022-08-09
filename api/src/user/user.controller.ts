@@ -9,30 +9,34 @@ import {
   Post,
   Query,
   UsePipes,
-  ValidationPipe
+  ValidationPipe,
 } from '@nestjs/common';
-import { UserService } from "./user.service";
-import { UserDto } from "./dto/user.dto";
-import { User } from "./user.schema";
-import { UsersResponseInterface } from "./types/users.response.interface";
-import { GeoService } from "../geo/geo.service";
+import { UserService } from './user.service';
+import { UserDto } from './dto/user.dto';
+import { User } from './user.schema';
+import { UsersResponseInterface } from './types/users.response.interface';
+import { GeoService } from '../geo/geo.service';
 
 @Controller('users')
 export class UserController {
-
-  constructor(private readonly userService: UserService,
-    private readonly geoService: GeoService) {
-  }
+  constructor(
+    private readonly userService: UserService,
+    private readonly geoService: GeoService,
+  ) {}
 
   @Get()
   @HttpCode(200)
-  async fetch(@Query() query: any,
-  ): Promise<UsersResponseInterface> {
+  async fetch(@Query() query: any): Promise<UsersResponseInterface> {
     const usersData = await this.userService.fetch(query);
     usersData.users.map((user: User) => {
-      Object.assign(user,
-        this.geoService
-          .getGeoDataNames(user.countryId, user.stateId, user.cityId));
+      Object.assign(
+        user,
+        this.geoService.getGeoDataNames(
+          user.countryId,
+          user.stateId,
+          user.cityId,
+        ),
+      );
     });
     return usersData;
   }
@@ -47,7 +51,7 @@ export class UserController {
   @HttpCode(201)
   @UsePipes(new ValidationPipe())
   async create(@Body() userDto: UserDto): Promise<User> {
-    return this.userService.create(userDto)
+    return this.userService.create(userDto);
   }
 
   @Patch(':id')
@@ -55,7 +59,8 @@ export class UserController {
   @UsePipes(new ValidationPipe())
   async update(
     @Param('id') userId: string,
-    @Body('user') userDto: Partial<UserDto>): Promise<User> {
+    @Body('user') userDto: Partial<UserDto>,
+  ): Promise<User> {
     return await this.userService.findOneAndUpdate(userId, userDto);
   }
 
@@ -65,4 +70,3 @@ export class UserController {
     return this.userService.findByIdAndRemove(id);
   }
 }
-

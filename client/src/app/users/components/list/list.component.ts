@@ -1,25 +1,38 @@
-import {UserResponse} from '../../interfaces/user.response.interface';
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource} from "@angular/material/table";
-import {User} from "../../interfaces/user.interface";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {UserService} from "../../services/user.service";
-import {debounceTime, distinctUntilChanged, fromEvent, merge, Subscription, tap} from "rxjs";
-import {CommonService} from "../../services/common.service";
+import { UserResponse } from '../../interfaces/user.response.interface';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { User } from '../../interfaces/user.interface';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { UserService } from '../../services/user.service';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  fromEvent,
+  merge,
+  Subscription,
+  tap,
+} from 'rxjs';
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
-
   isLoading: boolean = false;
   totalRows = 0;
   pageSize = 5;
   pageNumber = 0;
-  pageSizeOptions = [5, 10, 25, 100]
+  pageSizeOptions = [5, 10, 25, 100];
   displayedColumns: string[] = [
     'id',
     'firstName',
@@ -33,7 +46,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     'address',
     'pinCode',
     'edit',
-    'remove'
+    'remove',
   ];
 
   dataSource: MatTableDataSource<User> = new MatTableDataSource();
@@ -45,15 +58,17 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private usersService: UserService,
-    private commonService: CommonService,
+    private commonService: CommonService
   ) {
-    this.dataUpdatingSubscription = this.commonService.getUpdate().subscribe((_) => {
-      this.loadData();
-    });
+    this.dataUpdatingSubscription = this.commonService
+      .getUpdate()
+      .subscribe((_) => {
+        this.loadData();
+      });
   }
 
   ngOnInit(): void {
-    this.loadData()
+    this.loadData();
   }
 
   ngOnDestroy(): void {
@@ -73,13 +88,11 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe();
 
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
     // if sort or paginate -> load a new page
     merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        tap(() => this.loadData())
-      )
+      .pipe(tap(() => this.loadData()))
       .subscribe();
   }
 
@@ -90,24 +103,22 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
       pageNumber: this.pageNumber,
       pageSize: this.pageSize,
       sortDirection: this.sort?.direction ? this.sort.direction : 'asc',
-      sortKey: this.sort?.active ? this.sort.active : '_id'
-    }
+      sortKey: this.sort?.active ? this.sort.active : '_id',
+    };
 
     let search = this.input?.nativeElement.value;
-    Object.assign(params, search && {search});
+    Object.assign(params, search && { search });
 
-    this.usersService
-      .fetch(params)
-      .subscribe((usersData: UserResponse) => {
-        this.dataSource.data = usersData.users;
-        setTimeout(() => {
-          this.paginator.pageIndex = this.pageNumber;
-          this.paginator.length = +usersData.count;
-          this.totalRows = +usersData.count;
-        });
-        this.isLoading = false;
-        this.dataSource.sort = this.sort;
+    this.usersService.fetch(params).subscribe((usersData: UserResponse) => {
+      this.dataSource.data = usersData.users;
+      setTimeout(() => {
+        this.paginator.pageIndex = this.pageNumber;
+        this.paginator.length = +usersData.count;
+        this.totalRows = +usersData.count;
       });
+      this.isLoading = false;
+      this.dataSource.sort = this.sort;
+    });
   }
 
   pageChanged(event: PageEvent): void {
@@ -118,8 +129,10 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   remove(id: string): void {
     this.usersService.remove(id).subscribe((user: User) => {
-      this.commonService
-        .showNotify(`User ${user.firstName} ${user.lastName} deleted.`, 'Close');
+      this.commonService.showNotify(
+        `User ${user.firstName} ${user.lastName} deleted.`,
+        'Close'
+      );
       this.loadData();
     });
   }

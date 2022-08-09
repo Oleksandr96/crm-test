@@ -1,14 +1,13 @@
-import {UserResponse} from './../interfaces/user.response.interface';
-import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
-import {User} from "../interfaces/user.interface";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
+import { UserResponse } from './../interfaces/user.response.interface';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from '../interfaces/user.interface';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
-@Injectable({providedIn: "root"})
+@Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   API_URL: string = environment.apiUrl;
 
@@ -25,7 +24,7 @@ export class UserService {
   }
 
   public update(user: User, userId: string): Observable<User> {
-    return this.http.patch<User>(`${this.API_URL}/users/${userId}`, {user});
+    return this.http.patch<User>(`${this.API_URL}/users/${userId}`, { user });
   }
 
   public remove(id: string): Observable<User> {
@@ -33,6 +32,6 @@ export class UserService {
   }
 
   public getById(id: string | undefined): Observable<User> {
-    return this.http.get<User>(`${this.API_URL}/users/${id}`)
+    return this.http.get<User>(`${this.API_URL}/users/${id}`);
   }
 }
