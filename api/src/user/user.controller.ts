@@ -16,6 +16,7 @@ import { UserDto } from './dto/user.dto';
 import { User } from './user.schema';
 import { UsersResponseInterface } from './types/users.response.interface';
 import { GeoService } from '../geo/geo.service';
+import { UserQueryInterface } from './types/user.query.interface';
 
 @Controller('users')
 export class UserController {
@@ -26,7 +27,9 @@ export class UserController {
 
   @Get()
   @HttpCode(200)
-  async fetch(@Query() query: any): Promise<UsersResponseInterface> {
+  async fetch(
+    @Query() query: UserQueryInterface,
+  ): Promise<UsersResponseInterface> {
     const usersData = await this.userService.fetch(query);
     usersData.users.map((user: User) => {
       Object.assign(

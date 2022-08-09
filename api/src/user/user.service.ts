@@ -4,12 +4,13 @@ import { User, UserDocument } from './user.schema';
 import { UserDto } from './dto/user.dto';
 import { Model } from 'mongoose';
 import { UsersResponseInterface } from './types/users.response.interface';
+import { UserQueryInterface } from './types/user.query.interface';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async fetch(query): Promise<UsersResponseInterface> {
+  async fetch(query: UserQueryInterface): Promise<UsersResponseInterface> {
     const { pageNumber, pageSize, sortDirection, sortKey, search } = query;
     const searchQuery = { ...(search ? { $text: { $search: search } } : null) };
 
