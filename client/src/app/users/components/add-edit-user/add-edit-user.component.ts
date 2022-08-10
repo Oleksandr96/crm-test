@@ -73,15 +73,16 @@ export class AddEditUserComponent implements OnInit, OnDestroy {
     this.newUserSubscription = this.commonService
       .getUpdate()
       .subscribe((user: User) => {
-        this.userId = user._id || '';
-        if (this.userId) this.isAddMode = false;
-        this.usersService
-          .getById(user._id)
-          .pipe(first())
-          .subscribe((user: User) => {
-            console.log(user);
-            this.userForm.patchValue(user);
-          });
+        if (user) {
+          this.userId = user._id || '';
+          this.isAddMode = false;
+          this.usersService
+            .getById(user._id)
+            .pipe(first())
+            .subscribe((user: User) => {
+              this.userForm.patchValue(user);
+            });
+        }
       });
 
     this.countryId.valueChanges.subscribe((country: string) => {
